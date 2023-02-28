@@ -1,6 +1,6 @@
 import psycopg2
 import ReadFile
-import employee
+
 hostname = "localhost"
 u = "postgres"
 db = "Employee"
@@ -24,7 +24,7 @@ try:
        Email Varchar(250) NOT NULL,
        Sin_no varchar(20) NOT NULL,
        Salary int,
-       Category varchar(1)
+       Category varchar(3)
     ) '''
 
     csv_path = "C:\\Users\\Lenovo\\Desktop\\Capstone.csv"
@@ -43,7 +43,69 @@ try:
             '''.format(str(name),gender,dept,mobileNo,email,sin,salary)   
             
             cur.execute(insert_query)
+
+    select_employees = "select * from employee"
+
+    cur.execute(select_employees)
+
+    records = cur.fetchall()
+
+    if(len(records) > 0):
+        for row in records:
+            emp_id = row[0]
+            emp_name = row[1]
+            emp_gender = row[2]
+            emp_dept = row[3]
+            emp_mobileNo = row[4]
+            emp_Email = row[5]
+            emp_sin = row[6]
+            emp_Salary = row[7]
+
+            # Generate Category based on logic.
+            category = ''
+            if emp_id % 2 == 0 :  # even
+                if emp_gender == 'Male':
+                    if emp_dept == 'Software Developer':
+                        category = 'C1'
+                    elif emp_dept == 'QA':
+                        category = 'C2'
+                    elif emp_dept == 'Sales':
+                        category = 'C3'
+                    elif emp_dept == 'Business Analyst':
+                        category = 'C4'
+                else:
+                    if emp_dept == 'Software Developer':
+                        category = 'C5'
+                    elif emp_dept == 'QA':
+                        category = 'C6'
+                    elif emp_dept == 'Sales':
+                        category = 'C7'
+                    elif emp_dept == 'Business Analyst':
+                        category = 'C8'
+            else:
+                if emp_gender == 'Male':
+                    if emp_dept == 'Software Developer':
+                        category = 'C9'
+                    elif emp_dept == 'QA':
+                        category = 'C10'
+                    elif emp_dept == 'Sales':
+                        category = 'C11'
+                    elif emp_dept == 'Business Analyst':
+                        category = 'C12'
+                else:
+                    if emp_dept == 'Software Developer':
+                        category = 'C13'
+                    elif emp_dept == 'QA':
+                        category = 'C14'
+                    elif emp_dept == 'Sales':
+                        category = 'C15'
+                    elif emp_dept == 'Business Analyst':
+                        category = 'C16'                   
             
+            # update category in row.
+            update_statement = '''update employee set category='{0}' where employeeid={1}'''.format(category, emp_id)
+
+            cur.execute(update_statement) 
 
     conn.commit()
 
@@ -57,3 +119,4 @@ finally:
 
     if conn is not None:
         conn.close()
+
