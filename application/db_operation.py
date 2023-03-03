@@ -1,5 +1,7 @@
 import psycopg2
 import ReadFile
+import base64
+# import os
 
 hostname = "localhost"
 u = "postgres"
@@ -10,7 +12,26 @@ port_id = 5432
 conn = None
 cur = None
 
+def convertToBinaryData(empId):
+    filename = 'C:\\Users\\Lenovo\\Downloads\\db\\' + str(empId) + '.bmp'
+    # Convert digital data to binary format.
+    with open(filename, 'rb') as file:
+        binaryData = base64.b64encode(file.read())
+    return binaryData
+
+# def deleteAllBmpFiles():
+#     for i in range(1, 208):
+#         filen = 'C:\\Users\\Lenovo\\Desktop\\' + str(i) + '.bmp'
+#         try:
+#             os.remove(filen)
+#         except:
+#             pass
+#         finally:
+#             pass
+
 try:
+    # deleteAllBmpFiles()
+
     conn = psycopg2.connect(dbname = db, user = u, host = hostname, password = pwd, port = port_id)
 
     cur = conn.cursor()
@@ -60,8 +81,13 @@ try:
             emp_Email = row[5]
             emp_sin = row[6]
             emp_Salary = row[7]
-
+            binary = base64.b64decode(row[9])
             # Generate Category based on logic.
+            # if(emp_id == 127):
+            #     filep = 'C:\\Users\\Lenovo\\Desktop\\' + str(emp_id) + '.bmp'
+            #     with open(filep,"wb") as f:
+            #         f.write(binary)
+
             category = ''
             if emp_id % 2 == 0 :  # even
                 if emp_gender == 'Male':
@@ -103,12 +129,19 @@ try:
                         category = 'C16'                   
             
             # update category in row.
-            update_statement = '''update employee set category='{0}' where employeeid={1}'''.format(category, emp_id)
+            # update_statement = '''update employee set category='{0}' where employeeid={1}'''.format(category, emp_id)
 
-            cur.execute(update_statement) 
+            # convert fingerprint to byte Array.  
+            #fingerprint = convertToBinaryData(emp_id)
 
+            # print(fingerprint)
+
+            #update_statement = '''update employee set fingerprint=%s where employeeid=%s'''
+
+            
+            #cur.execute(update_statement,(fingerprint, emp_id))
+            
     conn.commit()
-
 except Exception as error:
     print(error)
 
