@@ -13,6 +13,7 @@ for file in [file for file in os.listdir("C:\\Users\\Lenovo\Downloads\\db")]:
     fingerprint_img = cv.imread(file1)
 
     sift = cv.SIFT_create()
+    
     keypoints_1, descriptor_1 = sift.detectAndCompute(test_img, None)
 
     keypoints_2, descriptor_2 = sift.detectAndCompute(fingerprint_img, None)
