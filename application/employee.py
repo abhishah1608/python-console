@@ -8,7 +8,8 @@ class employee:
     sin_no = None
     salary = None
     Category = None
-
+    
+    # define constructor to init member variables.
     def __init__(self, empId, name, gender, dept, mobileno, email, sin_no, salary):
         self.employeeid = empId
         self.name = name

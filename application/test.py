@@ -1,18 +1,18 @@
 import os
 import cv2 as cv
 
-test_img =cv.imread("C:\\Users\\Lenovo\\Desktop\\127.bmp")
+test_img =cv.imread("D:\\fingerprint\\test\\36.bmp")
 
 filename = None
 image = None
 kp1, kp2, mp = None, None, None
 best_score  = 0
 
-for file in [file for file in os.listdir("C:\\Users\\Lenovo\Downloads\\db")]:
-    file1 = "C:\\Users\\Lenovo\\Downloads\\db\\" + str(file)
+for file in [file for file in os.listdir("D:\\fingerprint\\db")]:
+    file1 = "D:\\fingerprint\\db\\" + str(file)
     fingerprint_img = cv.imread(file1)
 
-    sift = cv.SIFT_create()
+    sift = cv.SIFT_create() # scale invariant feature transform.
     
     keypoints_1, descriptor_1 = sift.detectAndCompute(test_img, None)
 
